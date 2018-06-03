@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="" rel="stylesheet">
+    <link rel="stylesheet" href="layui/css/layui.css">
+</head>
+
+<body>
+    <blockquote class="layui-elem-quote">
+        <button class="layui-btn layui-btn-radius">添加</button>
+    </blockquote>
+    <div id="demo"></div>
+        <form class="layui-form" action="" id="addForm" style="display: none;">
+            <div class="layui-form-item" style="margin-top: 20px" pane>
+                <label class="layui-form-label">输入框</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" pane>
+                <label class="layui-form-label">输入框</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" pane>
+                <label class="layui-form-label">密码框</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">辅助文字</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+
+        <script>
+            //Demo
+            layui.use('form', function(){
+                var form = layui.form;
+                //监听提交
+                form.on('submit(formDemo)', function(data){
+                    layer.msg(JSON.stringify(data.field));
+                    return false;
+                });
+            });
+        </script>
+</body>
+<script src="js/jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+<!--接收后台传来的参数-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var menus = JSON.parse([[${menus}]]);
+    /*]]>*/
+    //将数据转换为layui tree table 需要的格式
+    var data = new Array(menus.length);
+    $.each(menus,function (i,v) {
+        var menu = {};
+        var child = new Array();
+        menu.id = v.mid;
+        menu.name = v.title;
+        menu.parentId = v.pid;
+        menu.href = v.href;
+        var children = v.children;
+        $.each(children,function (index,val) {
+            var childMenu= {};
+            childMenu.id = val.mid;
+            childMenu.name = val.title;
+            childMenu.parentId = val.pid;
+            childMenu.href = val.href;
+            child[i] = childMenu;
+        })
+        menu.children = child;
+        data[i] = menu;
+    });
+    console.log(data);
+    console.log(menus);
+</script>
+
+<script type="text/javascript">
+function del(nodeId) {
+    layer.open({
+        type: 1,
+        title: 'layer mobile页',
+        area: ['600px', '600px'],
+        content:$("#addForm")
+    });
+}
+var layout = [
+    { name: '菜单名称',field:'title', treeNodes: true, headerClass: 'value_col', colClass: 'value_col', style: 'width: 30%' },
+    { name: '链接', field:'href', headerClass: 'value_col', colClass: 'value_col', style: 'width: 30%' },
+    {
+        name: '操作',
+        headerClass: 'value_col',
+        colClass: 'value_col',
+        style: 'width: 20%',
+        render: function(row) {
+            var html = '';
+            //如果是父级菜单
+            if(row.parentId ==  0){
+                html+='<a class="layui-btn layui-btn-radius layui-btn-normal layui-btn-xs" onclick="del(' + row.pid + ')"><i class="layui-icon">&#xe654;</i> 添加子菜单</a>'; //列渲染
+                html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="del(' + row.pid + ')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
+                if(row.children.length < 1){
+                    html+='<a class="layui-btn layui-btn-radius layui-btn-danger layui-btn-xs" onclick="del(' + row.pid + ')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
+                }
+            }else{
+                html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="del(' + row.pid + ')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
+                html+='<a class="layui-btn layui-btn-radius  layui-btn-danger layui-btn-xs" onclick="del(' + row.pid + ')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
+            }
+            return html;
+        }
+    },
+];
+
+layui.use(['form', 'tree', 'layer'], function() {
+    layer = layui.layer;
+    layui.treeGird({
+        elem: '#demo', //传入元素选择器
+//        nodes: [{
+//                "id": "1",
+//                "name": "父节点1",
+//                "children": [{
+//                        "id": "11",
+//                        "name": "子节点11"
+//                    },
+//                    {
+//                        "id": "12",
+//                        "name": "子节点12"
+//                    }
+//                ]
+//            },
+//            {
+//                "id": "2",
+//                "name": "父节点2",
+//                "children": [{
+//                    "id": "21",
+//                    "name": "子节点21",
+//                    "children": [{
+//                        "id": "211",
+//                        "name": "子节点211"
+//                    }]
+//                }]
+//            }
+//        ],
+        nodes:data,
+        layout: layout
+    });
+});
+</script>
+
+</html>
