@@ -9,32 +9,34 @@
     <link href="" rel="stylesheet">
     <link rel="stylesheet" href="layui/css/layui.css">
 </head>
+<style>
+    .hide{
+        display: none;
+    }
 
+</style>
 <body>
     <blockquote class="layui-elem-quote">
-        <button class="layui-btn layui-btn-radius">添加</button>
+        <button class="layui-btn layui-btn-radius" onclick="addMenu()">添加</button>
     </blockquote>
     <div id="demo"></div>
         <form class="layui-form" action="" id="addForm" style="display: none;">
             <div class="layui-form-item" style="margin-top: 20px" pane>
-                <label class="layui-form-label">输入框</label>
+                <label class="layui-form-label">菜单名称</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item" pane>
-                <label class="layui-form-label">输入框</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item" pane>
-                <label class="layui-form-label">密码框</label>
-                <div class="layui-input-inline">
-                    <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                    <input type="text" name="title" id="title" required  lay-verify="required" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">辅助文字</div>
             </div>
+            <div class="layui-form-item" pane>
+                <label class="layui-form-label">菜单链接</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="href"  id="href" placeholder="请输入菜单链接" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">辅助文字</div>
+            </div>
+            <input type="text" name="pid" id="pid"   autocomplete="off" class="layui-input hide">
+            <input type="text" name="mid" id="mid"  autocomplete="off" class="layui-input hide">
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
@@ -42,18 +44,6 @@
                 </div>
             </div>
         </form>
-
-        <script>
-            //Demo
-            layui.use('form', function(){
-                var form = layui.form;
-                //监听提交
-                form.on('submit(formDemo)', function(data){
-                    layer.msg(JSON.stringify(data.field));
-                    return false;
-                });
-            });
-        </script>
 </body>
 <script src="js/jquery.min.js"></script>
 <script src="layui/layui.js"></script>
@@ -69,8 +59,8 @@
         var child = new Array();
         menu.id = v.mid;
         menu.name = v.title;
-        menu.parentId = v.pid;
-        menu.href = v.href;
+        menu.parentId = v.pid|'';
+        menu.href = v.href|'';
         var children = v.children;
         $.each(children,function (index,val) {
             var childMenu= {};
@@ -82,15 +72,59 @@
         })
         menu.children = child;
         data[i] = menu;
+        console.log(data);
     });
 </script>
 
 <script type="text/javascript">
-function del(nodeId) {
+/*删除菜单*/
+function delMenu(id,name) {
+    //询问是否删除
+    layer.confirm('确定要删除【'+name+'】吗？', {
+        btn: ['确定','取消'] //按钮
+    }, function(){
+        //TODO 调用删除菜单接口进行删除操作
+    });
+
+
+}
+/*添加菜单*/
+function addMenu() {
     layer.open({
         type: 1,
-        title: 'layer mobile页',
-        area: ['600px', '600px'],
+        title: '添加菜单',
+        area: ['400px', '250px'],
+        content:$("#addForm")
+    });
+}
+
+/**
+ * 编辑菜单信息
+ * @param id
+ * @param name
+ * @param href
+ * @param parentId
+ */
+function editMenu(id,name,href,parentId) {
+    //将现有的信息默认进表单
+    $('#mid').val(id);
+    $('#pid').val(parentId);
+    $('#title').val(name);
+    $('#href').val(href);
+    layer.open({
+        type: 1,
+        title: '编辑菜单',
+        area: ['400px', '250px'],
+        content:$("#addForm")
+    });
+}
+/*添加子菜单*/
+function addChildMenu(id,name) {
+    $('#pid').val(id);
+    layer.open({
+        type: 1,
+        title: '添加\''+name+'\'的子菜单',
+        area: ['400px', '250px'],
         content:$("#addForm")
     });
 }
@@ -104,16 +138,18 @@ var layout = [
         style: 'width: 20%',
         render: function(row) {
             var html = '';
+            var jsonRow = JSON.stringify(row);
+            console.log(jsonRow);
             //如果是父级菜单
             if(row.parentId ==  0){
-                html+='<a class="layui-btn layui-btn-radius layui-btn-normal layui-btn-xs" onclick="del(' + row.pid + ')"><i class="layui-icon">&#xe654;</i> 添加子菜单</a>'; //列渲染
-                html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="del(' + row.pid + ')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
+                html+='<a class="layui-btn layui-btn-radius layui-btn-normal layui-btn-xs" onclick="addChildMenu(' + row.id + ',\''+row.name+'\')"><i class="layui-icon">&#xe654;</i> 添加子菜单</a>'; //列渲染
+                html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="editMenu('+row.id+',\''+row.name+'\',\''+row.href+'\',\''+row.parentId+'\')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
                 if(row.children.length < 1){
-                    html+='<a class="layui-btn layui-btn-radius layui-btn-danger layui-btn-xs" onclick="del(' + row.pid + ')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
+                    html+='<a class="layui-btn layui-btn-radius layui-btn-danger layui-btn-xs" onclick="delMenu(' + row.pid + ',\''+row.name+'\')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
                 }
             }else{
-                html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="del(' + row.pid + ')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
-                html+='<a class="layui-btn layui-btn-radius  layui-btn-danger layui-btn-xs" onclick="del(' + row.pid + ')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
+                html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="editMenu('+row.id+',\''+row.name+'\',\''+row.href+'\',\''+row.parentId+'\')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
+                html+='<a class="layui-btn layui-btn-radius  layui-btn-danger layui-btn-xs" onclick="delMenu(' + row.pid + ',\''+row.name+'\')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
             }
             return html;
         }
@@ -122,6 +158,7 @@ var layout = [
 
 layui.use(['form', 'tree', 'layer'], function() {
     layer = layui.layer;
+    var form = layui.form;
     layui.treeGird({
         elem: '#demo', //传入元素选择器
 //        nodes: [{
@@ -152,6 +189,12 @@ layui.use(['form', 'tree', 'layer'], function() {
 //        ],
         nodes:data,
         layout: layout
+    });
+
+    //监听提交
+    form.on('submit(formDemo)', function(data){
+        layer.msg(JSON.stringify(data.field));
+        return false;
     });
 });
 </script>
