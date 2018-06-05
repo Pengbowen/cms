@@ -59,8 +59,8 @@
         var child = new Array();
         menu.id = v.mid;
         menu.name = v.title;
-        menu.parentId = v.pid|'';
-        menu.href = v.href|'';
+        menu.parentId = v.pid||'';
+        menu.href = v.href||'';
         var children = v.children;
         $.each(children,function (index,val) {
             var childMenu= {};
