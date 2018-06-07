@@ -18,7 +18,7 @@
     <blockquote class="layui-elem-quote">
         <button class="layui-btn layui-btn-radius" onclick="addMenu()">添加</button>
     </blockquote>
-    <div id="demo"></div>
+    <div id="menuList"></div>
         <form class="layui-form" action="" id="addForm" style="display: none;">
             <div class="layui-form-item" style="margin-top: 20px" pane>
                 <label class="layui-form-label">菜单名称</label>
@@ -37,7 +37,7 @@
             <input type="text" name="mid" id="mid"  autocomplete="off" class="layui-input hide">
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button class="layui-btn" lay-submit lay-filter="formSubmit">立即提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
@@ -45,56 +45,114 @@
 </body>
 <script src="js/jquery.min.js"></script>
 <script src="layui/layui.js"></script>
-<!--接收后台传来的参数-->
+
 <script th:inline="javascript">
+    /*接收后台传输的参数*/
     /*<![CDATA[*/
     var menus = JSON.parse([[${menus}]]);
     /*]]>*/
+    var layout = [
+        { name: '菜单名称',field:'title', treeNodes: true, headerClass: 'value_col', colClass: 'value_col', style: 'width: 30%' },
+        { name: '链接', field:'href', headerClass: 'value_col', colClass: 'value_col', style: 'width: 30%' },
+        {
+            name: '操作',
+            headerClass: 'value_col',
+            colClass: 'value_col',
+            style: 'width: 20%',
+            render: function(row) {
+                var html = '';
+                //如果是父级菜单
+                if(row.parentId ==  0){
+                    html+='<a class="layui-btn layui-btn-radius layui-btn-normal layui-btn-xs" onclick="addChildMenu(' + row.id + ',\''+row.name+'\')"><i class="layui-icon">&#xe654;</i> 添加子菜单</a>'; //列渲染
+                    html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="editMenu('+row.id+',\''+row.name+'\',\''+row.href+'\',\''+row.parentId+'\')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
+                    if(row.children.length < 1){
+                        html+='<a class="layui-btn layui-btn-radius layui-btn-danger layui-btn-xs" onclick="delMenu(' + row.parentId + ',\''+row.name+'\')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
+                    }
+                }else{
+                    html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="editMenu('+row.id+',\''+row.name+'\',\''+row.href+'\',\''+row.parentId+'\')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
+                    html+='<a class="layui-btn layui-btn-radius  layui-btn-danger layui-btn-xs" onclick="delMenu(' + row.parentId + ',\''+row.name+'\')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
+                }
+                return html;
+            }
+        },
+    ];
     //将数据转换为layui tree table 需要的格式
-    var data = new Array(menus.length);
+    var data = new Array();
     $.each(menus,function (i,v) {
         var menu = {};
         var child = new Array();
         menu.id = v.mid;
         menu.name = v.title;
-        menu.parentId = v.pid||'';
-        menu.href = v.href||'';
+        menu.parentId = v.pid;
+        menu.href = v.href;
         var children = v.children;
-        $.each(children,function (index,val) {
-            var childMenu= {};
-            childMenu.id = val.mid;
-            childMenu.name = val.title;
-            childMenu.parentId = val.pid;
-            childMenu.href = val.href;
-            child[i] = childMenu;
-        })
+        if(children){
+            $.each(children,function (index,val) {
+                var childMenu= {};
+                childMenu.id = val.mid;
+                childMenu.name = val.title;
+                childMenu.parentId = val.pid;
+                childMenu.href = val.href;
+                child[index] = childMenu;
+            })
+        }
         menu.children = child;
         data[i] = menu;
-        console.log(data);
     });
-</script>
 
-<script type="text/javascript">
+
+    layui.use(['form', 'tree', 'layer'], function() {
+        layer = layui.layer;
+        form = layui.form;
+        layui.treeGird({
+            elem: '#menuList', //传入元素选择器
+            nodes:data,
+            layout: layout
+        });
+    });
+
 /*删除菜单*/
 function delMenu(id,name) {
+
+    //监听提交
+    form.on('submit(formSubmit)', function(data){
+        layer.msg(JSON.stringify(data.field));
+        console.log('执行删除');
+        return false;
+    });
     //询问是否删除
-    layer.confirm('确定要删除【'+name+'】吗？', {
+    var delLayer = layer.confirm('确定要删除【'+name+'】吗？', {
         btn: ['确定','取消'] //按钮
     }, function(){
         //TODO 调用删除菜单接口进行删除操作
+        layer.close(delLayer);
     });
-
-
 }
 /*添加菜单*/
 function addMenu() {
-    layer.open({
+    var addLayer = layer.open({
         type: 1,
         title: '添加菜单',
         area: ['400px', '250px'],
-        content:$("#addForm")
+        content:$("#addForm"),
+        end:resetForm
     });
+    //动态设置提交事件
+    //监听提交
+    form.on('submit(formSubmit)', function(data){
+        var url = 'menu/add';
+        $.post(url,data.field,function (result) {
+            if(result.code == 200){
+                layer.msg('添加成功');
+                layer.close(addLayer);
+            }
+        });
+        return false;
+    });
+
 }
+
+
 
 /**
  * 编辑菜单信息
@@ -104,6 +162,12 @@ function addMenu() {
  * @param parentId
  */
 function editMenu(id,name,href,parentId) {
+    //监听提交
+    form.on('submit(formSubmit)', function(data){
+        layer.msg(JSON.stringify(data.field));
+        console.log('执行编辑');
+        return false;
+    });
     //将现有的信息默认进表单
     $('#mid').val(id);
     $('#pid').val(parentId);
@@ -113,88 +177,36 @@ function editMenu(id,name,href,parentId) {
         type: 1,
         title: '编辑菜单',
         area: ['400px', '250px'],
-        content:$("#addForm")
+        content:$("#addForm"),
+        end:resetForm
     });
 }
 /*添加子菜单*/
 function addChildMenu(id,name) {
     $('#pid').val(id);
-    layer.open({
-        type: 1,
-        title: '添加\''+name+'\'的子菜单',
-        area: ['400px', '250px'],
-        content:$("#addForm")
-    });
-}
-var layout = [
-    { name: '菜单名称',field:'title', treeNodes: true, headerClass: 'value_col', colClass: 'value_col', style: 'width: 30%' },
-    { name: '链接', field:'href', headerClass: 'value_col', colClass: 'value_col', style: 'width: 30%' },
-    {
-        name: '操作',
-        headerClass: 'value_col',
-        colClass: 'value_col',
-        style: 'width: 20%',
-        render: function(row) {
-            var html = '';
-            var jsonRow = JSON.stringify(row);
-            console.log(jsonRow);
-            //如果是父级菜单
-            if(row.parentId ==  0){
-                html+='<a class="layui-btn layui-btn-radius layui-btn-normal layui-btn-xs" onclick="addChildMenu(' + row.id + ',\''+row.name+'\')"><i class="layui-icon">&#xe654;</i> 添加子菜单</a>'; //列渲染
-                html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="editMenu('+row.id+',\''+row.name+'\',\''+row.href+'\',\''+row.parentId+'\')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
-                if(row.children.length < 1){
-                    html+='<a class="layui-btn layui-btn-radius layui-btn-danger layui-btn-xs" onclick="delMenu(' + row.pid + ',\''+row.name+'\')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
-                }
-            }else{
-                html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="editMenu('+row.id+',\''+row.name+'\',\''+row.href+'\',\''+row.parentId+'\')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
-                html+='<a class="layui-btn layui-btn-radius  layui-btn-danger layui-btn-xs" onclick="delMenu(' + row.pid + ',\''+row.name+'\')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
-            }
-            return html;
-        }
-    },
-];
-
-layui.use(['form', 'tree', 'layer'], function() {
-    layer = layui.layer;
-    var form = layui.form;
-    layui.treeGird({
-        elem: '#demo', //传入元素选择器
-//        nodes: [{
-//                "id": "1",
-//                "name": "父节点1",
-//                "children": [{
-//                        "id": "11",
-//                        "name": "子节点11"
-//                    },
-//                    {
-//                        "id": "12",
-//                        "name": "子节点12"
-//                    }
-//                ]
-//            },
-//            {
-//                "id": "2",
-//                "name": "父节点2",
-//                "children": [{
-//                    "id": "21",
-//                    "name": "子节点21",
-//                    "children": [{
-//                        "id": "211",
-//                        "name": "子节点211"
-//                    }]
-//                }]
-//            }
-//        ],
-        nodes:data,
-        layout: layout
-    });
-
     //监听提交
-    form.on('submit(formDemo)', function(data){
+    form.on('submit(formSubmit)', function(data){
         layer.msg(JSON.stringify(data.field));
+        console.log('执行删除');
         return false;
     });
-});
+    layer.open({
+        type: 1,
+        title: '添加【'+name+'】的子菜单',
+        area: ['400px', '250px'],
+        content:$("#addForm"),
+        end:resetForm
+    });
+}
+/**
+ * 初始化表单
+ */
+function  resetForm() {
+    console.log("执行销毁方法")
+    $('#mid').val('');
+    $('#pid').val('');
+    $('#title').val('');
+    $('#href').val('');
+}
 </script>
-
 </html>
