@@ -16,7 +16,7 @@
 </style>
 <body>
     <blockquote class="layui-elem-quote">
-        <button class="layui-btn layui-btn-radius" onclick="addMenu()">添加</button>
+        <button class="layui-btn layui-btn-radius" onclick="addMenu()">添加一级菜单</button>
     </blockquote>
     <div id="menuList"></div>
         <form class="layui-form" action="" id="addForm" style="display: none;">
@@ -66,11 +66,11 @@
                     html+='<a class="layui-btn layui-btn-radius layui-btn-normal layui-btn-xs" onclick="addChildMenu(' + row.id + ',\''+row.name+'\')"><i class="layui-icon">&#xe654;</i> 添加子菜单</a>'; //列渲染
                     html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="editMenu('+row.id+',\''+row.name+'\',\''+row.href+'\',\''+row.parentId+'\')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
                     if(row.children.length < 1){
-                        html+='<a class="layui-btn layui-btn-radius layui-btn-danger layui-btn-xs" onclick="delMenu(' + row.parentId + ',\''+row.name+'\')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
+                        html+='<a class="layui-btn layui-btn-radius layui-btn-danger layui-btn-xs" onclick="delMenu(' + row.id + ',\''+row.name+'\')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
                     }
                 }else{
                     html+='<a class="layui-btn layui-btn-radius  layui-btn-xs" onclick="editMenu('+row.id+',\''+row.name+'\',\''+row.href+'\',\''+row.parentId+'\')"><i class="layui-icon">&#xe642;</i> 编辑</a>'; //列渲染
-                    html+='<a class="layui-btn layui-btn-radius  layui-btn-danger layui-btn-xs" onclick="delMenu(' + row.parentId + ',\''+row.name+'\')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
+                    html+='<a class="layui-btn layui-btn-radius  layui-btn-danger layui-btn-xs" onclick="delMenu(' + row.id + ',\''+row.name+'\')"><i class="layui-icon">&#xe640;</i> 删除</a>'; //列渲染
                 }
                 return html;
             }
@@ -84,7 +84,7 @@
         menu.id = v.mid;
         menu.name = v.title;
         menu.parentId = v.pid;
-        menu.href = v.href;
+        menu.href = v.href || '';
         var children = v.children;
         if(children){
             $.each(children,function (index,val) {
@@ -107,24 +107,31 @@
         layui.treeGird({
             elem: '#menuList', //传入元素选择器
             nodes:data,
+            spreadable:true,
             layout: layout
         });
     });
 
 /*删除菜单*/
 function delMenu(id,name) {
-
-    //监听提交
-    form.on('submit(formSubmit)', function(data){
-        layer.msg(JSON.stringify(data.field));
-        console.log('执行删除');
-        return false;
-    });
     //询问是否删除
     var delLayer = layer.confirm('确定要删除【'+name+'】吗？', {
         btn: ['确定','取消'] //按钮
     }, function(){
         //TODO 调用删除菜单接口进行删除操作
+        var url = 'menu/delete';
+        var data = {'mid':id};
+        $.post(url,data,function (rtnData) {
+            if(rtnData.code == 200){
+                layer.msg("已删除!");
+            }else {
+                layer.msg(rtnData.message);
+            }
+            setTimeout(function () {
+                location.reload();
+            },1000)
+        });
+
         layer.close(delLayer);
     });
 }
@@ -142,10 +149,14 @@ function addMenu() {
     form.on('submit(formSubmit)', function(data){
         var url = 'menu/add';
         $.post(url,data.field,function (result) {
-            if(result.code == 200){
-                layer.msg('添加成功');
-                layer.close(addLayer);
+            if (result.code == 200){
+                layer.msg("添加成功!");
+            }else{
+                layer.msg('添加失败!');
             }
+            setTimeout(function () {
+                location.reload();
+            },1000)
         });
         return false;
     });
@@ -166,6 +177,20 @@ function editMenu(id,name,href,parentId) {
     form.on('submit(formSubmit)', function(data){
         layer.msg(JSON.stringify(data.field));
         console.log('执行编辑');
+        var url = 'menu/update';
+        var data = data.field;
+        $.post(url,data,function (rtnData) {
+
+            if (rtnData.code == 200){
+                layer.msg("数据已修改!");
+            }else{
+                layer.msg('数据修改失败!');
+            }
+
+            setTimeout(function () {
+                location.reload();
+            },1000)
+        });
         return false;
     });
     //将现有的信息默认进表单
@@ -187,7 +212,18 @@ function addChildMenu(id,name) {
     //监听提交
     form.on('submit(formSubmit)', function(data){
         layer.msg(JSON.stringify(data.field));
-        console.log('执行删除');
+        var url = "menu/add";
+        var data = data.filed;
+        $.post(url,data,function (rtnData) {
+            if (rtnData.code == 200){
+                layer.msg("添加成功!");
+            }else{
+                layer.msg('添加失败!');
+            }
+            setTimeout(function () {
+                location.reload();
+            },1000)
+        });
         return false;
     });
     layer.open({

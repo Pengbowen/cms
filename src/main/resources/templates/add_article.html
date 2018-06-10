@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发布文章</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+<style>
+    .title_div{
+        padding-top: 20px;
+        padding-bottom: 15px;
+    }
+    .title{
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px;
+        border-bottom-style: solid;
+        float: left;
+        height: 32px;
+        font-size: 25px;
+        font-weight: 400;
+    }
+    .title:hover{
+        border-bottom-style: solid;
+        border-bottom-color: #e6e6e6;
+    }
+    .form{
+        width: 80%;
+        margin-left: 10%;
+    }
+    .publish_area{
+        background-color: #F8F8F8;
+    }
+    .publish_title{
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .preview_img{
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .preview_img img{
+        width: 300px;
+        height: 200px;
+    }
+    .summary textarea{
+        width: 70%;
+        height: 70px;
+    }
+    .prompt{
+        padding-left:5px;
+    }
+    .cover_prompt{
+        margin-bottom: 10px;
+    }
+    .summary_prompt{
+        margin: 10px 0px;
+    }
+    .category{
+        width: 300px;
+    }
+</style>
+<body>
+
+<form class="layui-form form" action="">
+
+    <div class="layui-form-item title_div">
+            <input type="text" name="title" required  lay-verify="required" placeholder="请在这里输入标题" autocomplete="off" class="layui-input title">
+    </div>
+    <div id="editor" class="editor">
+    </div>
+    <div class="publish_area">
+        <div class="publish_title prompt">
+            <h3>发布样式编辑</h3>
+        </div>
+        <div>
+            <h5 class="cover_prompt prompt">封面</h5>
+            <button type="button" class="layui-btn" id="test1">
+                <i class="layui-icon">&#xe67c;</i>发布封面
+            </button>
+            <div class="preview_img">
+                <img id="cover" src="http://e.hiphotos.baidu.com/image/h%3D300/sign=1cde79857e0e0cf3bff748fb3a47f23d/adaf2edda3cc7cd9019ce04e3501213fb90e91f0.jpg" alt="">
+            </div>
+        </div>
+        <div class="layui-form-item category">
+            <h5 class="summary_prompt prompt">文章分类</h5>
+                <select name="category" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">北京</option>
+                    <option value="1">上海</option>
+                    <option value="2">广州</option>
+                    <option value="3">深圳</option>
+                    <option value="4">杭州</option>
+                </select>
+        </div>
+        <div class="layui-form-item layui-form-text summary">
+            <h5 class="summary_prompt prompt">摘要</h5>
+            <textarea name="desc" placeholder="请输入摘要，如果不填写会默认抓取正文的前50个字" class="layui-textarea"></textarea>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">预览</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<button onclick="getContent();">获取内容</button>
+</body>
+<script src="../js/jquery.min.js"></script>
+<script src="../layui/layui.js"></script>
+<script src="../js/wangEditor.js"></script>
+<script>
+    var E = window.wangEditor
+    var editor = new E('#editor')
+    // 或者 var editor = new E( document.getElementById('editor') )
+    editor.create();
+    function  getContent() {
+        console.log(editor.txt.text());
+        console.log(editor.txt.html());
+    }
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>
+</html>

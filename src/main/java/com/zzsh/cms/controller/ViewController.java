@@ -48,7 +48,6 @@ public class ViewController {
     public String toIndex(Model model){
         List<Menu> menuList = menuService.getAllMenus();
         model.addAttribute("menus", JSONObject.toJSONString(menuList));
-        model.addAttribute("str","尝试");
         return "/index";
     }
 
@@ -62,4 +61,6 @@ public class ViewController {
         logger.info("title=[{}]",title);
         return "test";
     }
+
+
 }

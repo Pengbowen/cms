@@ -60,6 +60,7 @@ public class MenuController {
     @RequestMapping("delete")
     @ResponseBody
     public Result delMenu( int  mid){
+        logger.info("菜单id:[{}]",mid);
         return   menuService.deleteMenu(mid);
     }
 
