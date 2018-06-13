@@ -146,7 +146,8 @@
         });
         //监听提交
         form.on('submit(publishArticle)', function(data){
-            layer.msg(JSON.stringify(data.field));
+            layer.msg(JSON.stringify(data.field))
+            var content = editor.txt.html();
             return false;
         });
     });

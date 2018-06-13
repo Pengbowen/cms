@@ -3,8 +3,13 @@ package com.zzsh.cms.mapper;
 import com.zzsh.cms.pojo.Category;
 import com.zzsh.cms.pojo.CategoryExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+@Mapper
+@Repository
 public interface CategoryMapper {
     int countByExample(CategoryExample example);
 
@@ -27,4 +32,6 @@ public interface CategoryMapper {
     int updateByPrimaryKeySelective(Category record);
 
     int updateByPrimaryKey(Category record);
+
+    List<Category> selectAllCategorys();
 }

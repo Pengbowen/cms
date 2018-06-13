@@ -29,8 +29,6 @@ public class FileUploadController {
     @RequestMapping("img")
     @ResponseBody
     public FileResult uploadFile(HttpServletRequest request,MultipartFile file) throws Exception {
-        String contentType = file.getContentType();
-        String fileName = file.getOriginalFilename();
         //获取上传目录的绝对路径
         String filePath = ResourceUtils.getURL("classpath:").getPath()+imgSavePath;
         String filea = FileUtil.uploadFile(file, filePath);
