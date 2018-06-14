@@ -36,19 +36,21 @@ public class ViewController {
      * @return
      */
     @RequestMapping()
-    public String toLogin(){
-        return "login";
+    public String toIndex(Model model){
+        List<Menu> menuList = menuService.getAllMenus();
+        model.addAttribute("menus", JSONObject.toJSONString(menuList));
+        return "index";
     }
 
     /**
      * 进入主页
      * @return
      */
-    @RequestMapping("index")
-    public String toIndex(Model model){
+    @RequestMapping("toLogin")
+    public String toLogin(Model model){
         List<Menu> menuList = menuService.getAllMenus();
         model.addAttribute("menus", JSONObject.toJSONString(menuList));
-        return "/index";
+        return "/login";
     }
 
     /**

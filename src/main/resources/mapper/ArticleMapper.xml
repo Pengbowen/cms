@@ -12,6 +12,7 @@
     <result column="top" property="top" jdbcType="TINYINT" />
     <result column="author_id" property="authorId" jdbcType="INTEGER" />
     <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="cover_img" property="coverImg" jdbcType="VARCHAR" />
     <association property="category" javaType="com.zzsh.cms.pojo.Category" column="category_id" select="getCategory">
     </association>
   </resultMap>
@@ -78,14 +79,11 @@
   </sql>
   <sql id="Base_Column_List" >
     id, title, create_time, page_views, category_id, last_modify_time, hide, top, author_id, 
-    summary
+    summary, cover_img
   </sql>
   <sql id="Blob_Column_List" >
     content
   </sql>
-  <select id="getCategory" resultType="com.zzsh.cms.pojo.Category">
-    SELECT id ,category_name as categoryName FROM category where id = #{category_id}
-  </select>
   <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.zzsh.cms.pojo.ArticleExample" >
     select
     <if test="distinct" >
@@ -116,6 +114,9 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="getCategory" resultType="com.zzsh.cms.pojo.Category">
+    SELECT id ,category_name as categoryName FROM category where id = #{category_id}
+  </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -138,11 +139,13 @@
     insert into article (id, title, create_time, 
       page_views, category_id, last_modify_time, 
       hide, top, author_id, 
-      summary, content)
+      summary, cover_img, content
+      )
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{pageViews,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{lastModifyTime,jdbcType=TIMESTAMP}, 
       #{hide,jdbcType=TINYINT}, #{top,jdbcType=TINYINT}, #{authorId,jdbcType=INTEGER}, 
-      #{summary,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
+      #{summary,jdbcType=VARCHAR}, #{coverImg,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.zzsh.cms.pojo.Article" >
     insert into article
@@ -176,6 +179,9 @@
       </if>
       <if test="summary != null" >
         summary,
+      </if>
+      <if test="coverImg != null" >
+        cover_img,
       </if>
       <if test="content != null" >
         content,
@@ -211,6 +217,9 @@
       </if>
       <if test="summary != null" >
         #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="coverImg != null" >
+        #{coverImg,jdbcType=VARCHAR},
       </if>
       <if test="content != null" >
         #{content,jdbcType=LONGVARCHAR},
@@ -256,6 +265,9 @@
       <if test="record.summary != null" >
         summary = #{record.summary,jdbcType=VARCHAR},
       </if>
+      <if test="record.coverImg != null" >
+        cover_img = #{record.coverImg,jdbcType=VARCHAR},
+      </if>
       <if test="record.content != null" >
         content = #{record.content,jdbcType=LONGVARCHAR},
       </if>
@@ -276,6 +288,7 @@
       top = #{record.top,jdbcType=TINYINT},
       author_id = #{record.authorId,jdbcType=INTEGER},
       summary = #{record.summary,jdbcType=VARCHAR},
+      cover_img = #{record.coverImg,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -292,7 +305,8 @@
       hide = #{record.hide,jdbcType=TINYINT},
       top = #{record.top,jdbcType=TINYINT},
       author_id = #{record.authorId,jdbcType=INTEGER},
-      summary = #{record.summary,jdbcType=VARCHAR}
+      summary = #{record.summary,jdbcType=VARCHAR},
+      cover_img = #{record.coverImg,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -327,6 +341,9 @@
       <if test="summary != null" >
         summary = #{summary,jdbcType=VARCHAR},
       </if>
+      <if test="coverImg != null" >
+        cover_img = #{coverImg,jdbcType=VARCHAR},
+      </if>
       <if test="content != null" >
         content = #{content,jdbcType=LONGVARCHAR},
       </if>
@@ -344,6 +361,7 @@
       top = #{top,jdbcType=TINYINT},
       author_id = #{authorId,jdbcType=INTEGER},
       summary = #{summary,jdbcType=VARCHAR},
+      cover_img = #{coverImg,jdbcType=VARCHAR},
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -357,7 +375,8 @@
       hide = #{hide,jdbcType=TINYINT},
       top = #{top,jdbcType=TINYINT},
       author_id = #{authorId,jdbcType=INTEGER},
-      summary = #{summary,jdbcType=VARCHAR}
+      summary = #{summary,jdbcType=VARCHAR},
+      cover_img = #{coverImg,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

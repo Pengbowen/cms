@@ -724,6 +724,76 @@ public class ArticleExample {
             addCriterion("summary not between", value1, value2, "summary");
             return (Criteria) this;
         }
+
+        public Criteria andCoverImgIsNull() {
+            addCriterion("cover_img is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgIsNotNull() {
+            addCriterion("cover_img is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgEqualTo(String value) {
+            addCriterion("cover_img =", value, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgNotEqualTo(String value) {
+            addCriterion("cover_img <>", value, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgGreaterThan(String value) {
+            addCriterion("cover_img >", value, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgGreaterThanOrEqualTo(String value) {
+            addCriterion("cover_img >=", value, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgLessThan(String value) {
+            addCriterion("cover_img <", value, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgLessThanOrEqualTo(String value) {
+            addCriterion("cover_img <=", value, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgLike(String value) {
+            addCriterion("cover_img like", value, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgNotLike(String value) {
+            addCriterion("cover_img not like", value, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgIn(List<String> values) {
+            addCriterion("cover_img in", values, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgNotIn(List<String> values) {
+            addCriterion("cover_img not in", values, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgBetween(String value1, String value2) {
+            addCriterion("cover_img between", value1, value2, "coverImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andCoverImgNotBetween(String value1, String value2) {
+            addCriterion("cover_img not between", value1, value2, "coverImg");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

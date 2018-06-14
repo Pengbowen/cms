@@ -23,6 +23,8 @@ public class Article {
 
     private String summary;
 
+    private String coverImg;
+
     private String content;
 
     private Category category;
@@ -105,6 +107,14 @@ public class Article {
 
     public void setSummary(String summary) {
         this.summary = summary == null ? null : summary.trim();
+    }
+
+    public String getCoverImg() {
+        return coverImg;
+    }
+
+    public void setCoverImg(String coverImg) {
+        this.coverImg = coverImg == null ? null : coverImg.trim();
     }
 
     public String getContent() {

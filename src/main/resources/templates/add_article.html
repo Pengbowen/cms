@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>发布文章</title>
@@ -86,18 +86,15 @@
         </div>
         <div class="layui-form-item category">
             <h5 class="summary_prompt prompt">文章分类</h5>
-                <select name="category" lay-verify="required">
+            <!--/*@thymesVar id="categoryList" type="java.util.List<com.zzsh.cms.pojo.Category>"*/-->
+                <select  name="categoryId" lay-verify="required" >
                     <option value=""></option>
-                    <option value="0">北京</option>
-                    <option value="1">上海</option>
-                    <option value="2">广州</option>
-                    <option value="3">深圳</option>
-                    <option value="4">杭州</option>
+                    <option  th:each="category : ${categoryList}" th:text = "${category.categoryName}" th:value="${category.id}"></option>
                 </select>
         </div>
         <div class="layui-form-item layui-form-text summary">
             <h5 class="summary_prompt prompt">摘要</h5>
-            <textarea name="desc" id="desc" placeholder="请输入摘要，如果不填写会默认抓取正文的前50个字" class="layui-textarea"></textarea>
+            <textarea name="summary" id="desc" placeholder="请输入摘要，如果不填写会默认抓取正文的前50个字" class="layui-textarea"></textarea>
         </div>
         <div class="layui-form-item">
             <button class="layui-btn" lay-submit lay-filter="publishArticle">立即提交</button>
@@ -138,7 +135,6 @@
                     $('#cover').attr('src',res.data[0]);
                     $('.preview_img').show();
                 }
-
             }
             ,error: function(){
                 //请求异常回调
@@ -146,8 +142,22 @@
         });
         //监听提交
         form.on('submit(publishArticle)', function(data){
-            layer.msg(JSON.stringify(data.field))
+            var dataObj = data.field;
             var content = editor.txt.html();
+            dataObj.content = content;
+            var coverImgPath = $('#cover').attr('src');
+            dataObj.coverImg = coverImgPath;
+            delete dataObj.file;
+            layer.msg(JSON.stringify(dataObj));
+            console.log(dataObj);
+            var url = "/article/publish";
+            $.post(url,dataObj,function (data) {
+                if(data.code == 200){
+                    layer.msg("发布成功");
+                }
+            });
+
+
             return false;
         });
     });

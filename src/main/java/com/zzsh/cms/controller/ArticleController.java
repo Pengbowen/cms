@@ -2,11 +2,16 @@ package com.zzsh.cms.controller;
 
 import com.zzsh.cms.commons.pojo.Result;
 import com.zzsh.cms.pojo.Article;
+import com.zzsh.cms.pojo.Category;
 import com.zzsh.cms.service.ArticleService;
+import com.zzsh.cms.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * @program: cms
@@ -21,14 +26,22 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @RequestMapping("add")
-    public String addArticle(){
+    public String addArticle(Model model){
+
+        List<Category> categoryList = categoryService.getAllCategory();
+        model.addAttribute("categoryList",categoryList);
         return "add_article";
     }
 
     @RequestMapping("publish")
     @ResponseBody
     public Result publishArticle(Article article){
+        //TODO 设置作者id
+        article.setAuthorId(1);
         return  articleService.addArticle(article);
     }
 
