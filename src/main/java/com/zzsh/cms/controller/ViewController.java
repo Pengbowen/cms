@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,13 @@ public class ViewController {
         logger.info("title=[{}]",title);
         return "test";
     }
+
+    @RequestMapping(value ="blog/{pageName}")
+    public String toBlogPage(@PathVariable("pageName") String pageName){
+        logger.info(pageName);
+        return  "blog/"+pageName;
+    }
+
 
 
 }
