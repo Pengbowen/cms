@@ -148,7 +148,6 @@
             var coverImgPath = $('#cover').attr('src');
             dataObj.coverImg = coverImgPath;
             delete dataObj.file;
-            layer.msg(JSON.stringify(dataObj));
             console.log(dataObj);
             var url = "/article/publish";
             $.post(url,dataObj,function (data) {
@@ -156,8 +155,6 @@
                     layer.msg("发布成功");
                 }
             });
-
-
             return false;
         });
     });

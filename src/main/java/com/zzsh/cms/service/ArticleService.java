@@ -3,6 +3,8 @@ package com.zzsh.cms.service;
 import com.zzsh.cms.commons.pojo.Result;
 import com.zzsh.cms.pojo.Article;
 
+import java.util.List;
+
 /**
  * 文章操作服务
  */
@@ -20,7 +22,7 @@ public interface ArticleService {
      * @param cid
      * @return
      */
-    Result listArticleByCId(int cid);
+    Result listResultArticleByCId(int cid);
 
     /**
      * 修改文章
@@ -28,4 +30,7 @@ public interface ArticleService {
      * @return
      */
     Result updateArticle(Article article);
+
+    List<Article> listArticleByCId(int cid);
+
 }

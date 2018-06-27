@@ -48,8 +48,8 @@ public class MenuController {
      */
     @RequestMapping("add")
     @ResponseBody
-    public Result addMenu( Menu menu){
-      return   menuService.addMenu(menu);
+    public Result addMenu(Menu menu){
+        return   menuService.addMenu(menu);
     }
 
     /**

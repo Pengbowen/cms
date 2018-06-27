@@ -45,7 +45,6 @@
 </body>
 <script src="js/jquery.min.js"></script>
 <script src="layui/layui.js"></script>
-
 <script th:inline="javascript">
     /*接收后台传输的参数*/
     /*<![CDATA[*/
@@ -211,10 +210,9 @@ function addChildMenu(id,name) {
     $('#pid').val(id);
     //监听提交
     form.on('submit(formSubmit)', function(data){
-        layer.msg(JSON.stringify(data.field));
         var url = "menu/add";
-        var data = data.filed;
-        $.post(url,data,function (rtnData) {
+        console.log(data);
+        $.post(url,data.field,function (rtnData) {
             if (rtnData.code == 200){
                 layer.msg("添加成功!");
             }else{

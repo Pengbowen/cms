@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -125,16 +125,17 @@
 <div class="am-g am-g-fixed blog-fixed">
     <div class="am-u-md-8 am-u-sm-12">
 
-        <article class="am-g blog-entry-article">
+        <!--/*@thymesVar id="articles" type="java.util.List<com.zzsh.cms.pojo.Article>"*/-->
+        <article class="am-g blog-entry-article" th:each="article:${articles}">
             <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-img">
-                <img src="../amaze/assets/i/f10.jpg" alt="" class="am-u-sm-12">
+                <img th:src="${article.coverImg}" alt="封面" class="am-u-sm-12">
             </div>
             <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-text">
                 <span><a href="" class="blog-color">article &nbsp;</a></span>
                 <span> @amazeUI &nbsp;</span>
                 <span>2015/10/9</span>
-                <h1><a href="">我本楚狂人，凤歌笑孔丘</a></h1>
-                <p>我们一直在坚持着，不是为了改变这个世界，而是希望不被这个世界所改变。
+                <h1><a href="" th:text="${article.title}"></a></h1>
+                <p th:text="${article.summary}">
                 </p>
                 <p><a href="" class="blog-continue">continue reading</a></p>
             </div>

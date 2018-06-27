@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <style>
+
+        .laytable-cell-1-coverImg{  /*最后的pic为字段的field*/
+            height: 100%;
+            max-width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+<table lay-filter="demo">
+    <thead>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+        <!-- 这里同样支持 laytpl 语法，如： -->
+        {{#  if(d.auth > 2){ }}
+        <a class="layui-btn layui-btn-xs" lay-event="check">审核</a>
+        {{#  } }}
+    </script>
+    <script type="text/html" id="cover">
+        <div>
+            <img src="{{d.coverImg}}">
+        </div>
+    </script>
+    <tr>
+        <th lay-data="{field:'id',  sort:true}">ID</th>
+        <th lay-data="{field:'coverImg',height:200,width:200,templet:'#cover'}">封面图片</th>
+        <th lay-data="{field:'title'}">标题</th>
+        <th lay-data="{field:'summary'}">摘要</th>
+        <th lay-data="{field:'createTime'}">发布时间</th>
+        <th lay-data="{field:'pageViews'}">浏览量</th>
+        <th lay-data="{fixed: 'right', align:'center', toolbar: '#barDemo'}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--/*@thymesVar id="articles" type="java.util.List<com.zzsh.cms.pojo.Article>"*/-->
+    <tr th:each="article:${articles}">
+        <td th:text="${article.id}" th:title="${article.id}"></td>
+        <td th:text="${article.coverImg}" ></td>
+        <td th:text="${article.title}"  th:title="${article.title}"></td>
+        <td th:text="${article.summary}"  th:title="${article.summary}"></td>
+        <td th:text="${#dates.format(article.createTime,'yyyy-MM-dd HH:mm:ss')}"  th:title="${article.createTime}"></td>
+        <td th:text="${article.pageViews}"  th:title="${article.pageViews}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../layui/layui.js"></script>
+</body>
+<script th:inline="javascript">
+    layui.use('table', function(){
+        var table = layui.table;
+        //转换静态表格
+        table.init('demo', {
+            height: 'full-20'//设置高度
+            ,limit: 10 //注意：请务必确保 limit 参数（默认：10）是与你服务端限定的数据条数一致
+            ,page:true,
+            loading:true
+
+        });
+    });
+</script>
+</html>

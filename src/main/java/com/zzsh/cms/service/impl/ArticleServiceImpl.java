@@ -30,14 +30,20 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Result listArticleByCId(int cid) {
+    public Result listResultArticleByCId(int cid) {
+        List<Article> articles = listArticleByCId(cid);
+        Result result =Result.SUCCESS;
+        result.setData(articles);
+        return result;
+    }
+
+    @Override
+    public List<Article> listArticleByCId(int cid) {
         ArticleExample example = new ArticleExample();
         ArticleExample.Criteria criteria = example.createCriteria();
         criteria.andCategoryIdEqualTo(cid);
         List<Article> articles = mapper.selectByExample(example);
-        Result result =Result.SUCCESS;
-        result.setData(articles);
-        return result;
+        return articles;
     }
 
     @Override
