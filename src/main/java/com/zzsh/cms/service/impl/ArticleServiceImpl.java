@@ -1,5 +1,8 @@
 package com.zzsh.cms.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.zzsh.cms.commons.pojo.PageData;
 import com.zzsh.cms.commons.pojo.Result;
 import com.zzsh.cms.mapper.ArticleMapper;
 import com.zzsh.cms.pojo.Article;
@@ -42,8 +45,19 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleExample example = new ArticleExample();
         ArticleExample.Criteria criteria = example.createCriteria();
         criteria.andCategoryIdEqualTo(cid);
+        PageHelper.startPage(1,5);
         List<Article> articles = mapper.selectByExample(example);
         return articles;
+    }
+
+    @Override
+    public PageData<Article> listPageArticleByCId(int cid) {
+        ArticleExample example = new ArticleExample();
+        ArticleExample.Criteria criteria = example.createCriteria();
+        criteria.andCategoryIdEqualTo(cid);
+        PageHelper.startPage(1,3);
+        List<Article> articles = mapper.selectByExample(example);
+        return null;
     }
 
     @Override

@@ -27,6 +27,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
+		<!--AOP切面-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
@@ -67,11 +68,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+		<!--实现热部署-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!--Shiro框架-->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-spring</artifactId>
@@ -87,10 +90,18 @@
 			<artifactId>thymeleaf-extras-shiro</artifactId>
 			<version>1.2.1</version>
 		</dependency>
+		<!--JSON解析-->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.2.28</version>
+		</dependency>
+
+		<!-- springboot分页插件 -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>1.2.3</version>
 		</dependency>
     </dependencies>
 

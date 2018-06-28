@@ -1,5 +1,6 @@
 package com.zzsh.cms.service;
 
+import com.zzsh.cms.commons.pojo.PageData;
 import com.zzsh.cms.commons.pojo.Result;
 import com.zzsh.cms.pojo.Article;
 
@@ -32,5 +33,7 @@ public interface ArticleService {
     Result updateArticle(Article article);
 
     List<Article> listArticleByCId(int cid);
+
+    PageData<Article> listPageArticleByCId(int cid);
 
 }
