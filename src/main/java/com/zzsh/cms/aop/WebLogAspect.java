@@ -30,6 +30,8 @@ public class WebLogAspect {
     public void getExecution() {
     }
 
+
+
     @AfterThrowing(value = "getExecution()",throwing="e")
     public Result doException(JoinPoint joinPoint,Exception e){
         // 接收到请求，记录请求内容

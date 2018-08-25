@@ -53,6 +53,7 @@
       <li><a href="lw-img.html">图片库</a></li>
       <li><a href="lw-article-fullwidth.html">全宽页面</a></li>
       <li><a href="lw-timeline.html">存档</a></li>
+        <li><a href="lw-timeline.html">关于我</a></li>
     </ul>
     <form class="am-topbar-form am-topbar-right am-form-inline" role="search">
       <div class="am-form-group">
@@ -131,10 +132,10 @@
                 <img th:src="${article.coverImg}" alt="封面" class="am-u-sm-12">
             </div>
             <div class="am-u-lg-6 am-u-md-12 am-u-sm-12 blog-entry-text">
-                <span><a href="" class="blog-color">article &nbsp;</a></span>
+                <span><a  class="blog-color">article &nbsp;</a></span>
                 <span> @amazeUI &nbsp;</span>
                 <span>2015/10/9</span>
-                <h1><a href="" th:text="${article.title}"></a></h1>
+                <h1><a th:href="|/article/read/${article.id}|" th:text="${article.title}" target="_blank"></a></h1>
                 <p th:text="${article.summary}">
                 </p>
                 <p><a href="" class="blog-continue">continue reading</a></p>
@@ -232,19 +233,17 @@
         </article>
         
         <ul class="am-pagination">
-  <li class="am-pagination-prev"><a href="">&laquo; Prev</a></li>
-  <li class="am-pagination-next"><a href="">Next &raquo;</a></li>
+  <li class="am-pagination-prev"><a href="">&laquo; 上一页</a></li>
+  <li class="am-pagination-next"><a href="">下一页 &raquo;</a></li>
 </ul>
     </div>
 
     <div class="am-u-md-4 am-u-sm-12 blog-sidebar">
         <div class="blog-sidebar-widget blog-bor">
             <h2 class="blog-text-center blog-title"><span>About ME</span></h2>
-            <img src="../amaze/assets/i/f14.jpg" alt="about me" class="blog-entry-img" >
-            <p>妹纸</p>
-            <p>
-        我是妹子UI，中国首个开源 HTML5 跨屏前端框架
-        </p><p>我不想成为一个庸俗的人。十年百年后，当我们死去，质疑我们的人同样死去，后人看到的是裹足不前、原地打转的你，还是一直奔跑、走到远方的我？</p>
+            <img src="../img/me.jpg" alt="about me" class="blog-entry-img" >
+            <p>彭博文</p>
+          <p>我不想成为一个庸俗的人。十年百年后，当我们死去，质疑我们的人同样死去，后人看到的是裹足不前、原地打转的你，还是一直奔跑、走到远方的我？</p>
         </div>
         <div class="blog-sidebar-widget blog-bor">
             <h2 class="blog-text-center blog-title"><span>Contact ME</span></h2>

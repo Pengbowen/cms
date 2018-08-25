@@ -45,7 +45,7 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleExample example = new ArticleExample();
         ArticleExample.Criteria criteria = example.createCriteria();
         criteria.andCategoryIdEqualTo(cid);
-        PageHelper.startPage(1,5);
+        PageHelper.startPage(1,10);
         List<Article> articles = mapper.selectByExample(example);
         return articles;
     }
@@ -58,6 +58,11 @@ public class ArticleServiceImpl implements ArticleService {
         PageHelper.startPage(1,3);
         List<Article> articles = mapper.selectByExample(example);
         return null;
+    }
+
+    @Override
+    public Article getArticleById(Integer id) {
+        return mapper.selectByPrimaryKey(id);
     }
 
     @Override

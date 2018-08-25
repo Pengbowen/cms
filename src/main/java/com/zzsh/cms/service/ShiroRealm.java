@@ -53,21 +53,23 @@ public class ShiroRealm  extends AuthorizingRealm {
 //            return  null;
 //        }
         //获取用户密码和加密盐
-        //String pwd = userInfo.getPassword();
-        //String salt = userInfo.getSalt();
-        String pwd = "2e03053c99bc4fe462ea9c05485cdc3e";
-        String username = "111";
-        String salt = "pbw";
+        String pwd = userInfo.getPassword();
+        String username = userInfo.getAccount();
+        String salt = userInfo.getSalt();
         ByteSource criendiatalSalt = ByteSource.Util.bytes(salt);
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username,pwd,criendiatalSalt,getName());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(userInfo,pwd,criendiatalSalt,getName());
         return info;
     }
 
     public static void main(String[] args) {
-        int hashIterations = 100;//加密的次数
-        Object salt = "pbw";//盐值
-        Object credentials = "222";//密码
-        String hashAlgorithmName = "MD5";//加密方式
+        //加密的次数
+        int hashIterations = 100;
+        //盐值
+        Object salt = "111";
+        //密码
+        Object credentials = "111111";
+        //加密方式
+        String hashAlgorithmName = "MD5";
         Object simpleHash = new SimpleHash(hashAlgorithmName, credentials,
                 salt, hashIterations);
         System.out.println("加密后的值----->" + simpleHash);

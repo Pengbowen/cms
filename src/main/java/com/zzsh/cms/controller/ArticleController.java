@@ -8,6 +8,8 @@ import com.zzsh.cms.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -43,6 +45,14 @@ public class ArticleController {
         //TODO 设置作者id
         article.setAuthorId(1);
         return  articleService.addArticle(article);
+    }
+
+    @GetMapping("read/{articleId}")
+    public String readArticle(@PathVariable("articleId") Integer articleId,Model model){
+        Article article = articleService.getArticleById(articleId);
+        model.addAttribute("article",article);
+        return "blog/lw-article-fullwidth";
+
     }
 
 }

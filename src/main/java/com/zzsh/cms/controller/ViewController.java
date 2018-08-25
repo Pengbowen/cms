@@ -31,7 +31,6 @@ public class ViewController {
 
     @Autowired
     private MenuService menuService;
-
     /**
      * 进入默认登陆页面
      * @return
@@ -40,8 +39,19 @@ public class ViewController {
     public String toIndex(Model model){
         List<Menu> menuList = menuService.getAllMenus();
         model.addAttribute("menus", JSONObject.toJSONString(menuList));
-        return "index";
+        return "login";
     }
+
+//    /**
+//     * 进入默认登陆页面
+//     * @return
+//     */
+//    @RequestMapping()
+//    public String toIndex(Model model){
+//        List<Menu> menuList = menuService.getAllMenus();
+//        model.addAttribute("menus", JSONObject.toJSONString(menuList));
+//        return "index";
+//    }
 
     /**
      * 进入主页

@@ -36,4 +36,6 @@ public interface ArticleService {
 
     PageData<Article> listPageArticleByCId(int cid);
 
+    Article getArticleById(Integer id);
+
 }
