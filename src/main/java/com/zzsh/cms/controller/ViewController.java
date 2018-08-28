@@ -35,11 +35,11 @@ public class ViewController {
      * 进入默认登陆页面
      * @return
      */
-    @RequestMapping()
+    @RequestMapping("admin")
     public String toIndex(Model model){
         List<Menu> menuList = menuService.getAllMenus();
         model.addAttribute("menus", JSONObject.toJSONString(menuList));
-        return "login";
+        return "index";
     }
 
 //    /**

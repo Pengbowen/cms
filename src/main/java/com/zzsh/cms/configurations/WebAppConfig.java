@@ -27,6 +27,7 @@ public class WebAppConfig implements WebMvcConfigurer {
         List<String> excludePath = new ArrayList<>();
         //设置不拦截静态资源
         excludePath.add("/");
+        excludePath.add("/toLogin");
         excludePath.add("/login");
         excludePath.add("/amaze/**");
         excludePath.add("/css/**");

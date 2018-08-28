@@ -18,12 +18,11 @@ public class LoginInterceptor implements HandlerInterceptor{
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println(request.getRequestURL());
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         if(!Objects.isNull(user)){
             return  true;
         }
-        response.sendRedirect("/");
+        response.sendRedirect("/toLogin");
         return false;
     }
 

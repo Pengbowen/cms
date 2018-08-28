@@ -1,6 +1,5 @@
 package com.zzsh.cms.configurations;
 
-import com.zzsh.cms.filters.LoginFilter;
 import com.zzsh.cms.service.ShiroRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;

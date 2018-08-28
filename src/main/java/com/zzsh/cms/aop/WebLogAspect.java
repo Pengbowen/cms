@@ -3,6 +3,7 @@ package com.zzsh.cms.aop;
 import com.zzsh.cms.commons.pojo.Result;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
@@ -29,8 +30,6 @@ public class WebLogAspect {
     @Pointcut("execution(public * com.zzsh.cms.controller..*.*(..))")
     public void getExecution() {
     }
-
-
 
     @AfterThrowing(value = "getExecution()",throwing="e")
     public Result doException(JoinPoint joinPoint,Exception e){

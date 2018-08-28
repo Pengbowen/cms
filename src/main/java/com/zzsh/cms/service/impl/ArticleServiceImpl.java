@@ -10,6 +10,7 @@ import com.zzsh.cms.pojo.ArticleExample;
 import com.zzsh.cms.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -63,6 +64,16 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article getArticleById(Integer id) {
         return mapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.DEFAULT)
+    public Result<String> delArticle(int id) {
+      int res =  mapper.deleteByPrimaryKey(id);
+      if (res > 0){
+          return Result.SUCCESS;
+      }
+      return Result.FAIL;
     }
 
     @Override

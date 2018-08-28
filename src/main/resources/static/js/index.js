@@ -136,8 +136,6 @@ layui.config({
 
 //打开新窗口
 function addTab(_this){
-	console.log("打开新标签");
-	console.log(_this);
 	tab.tabAdd(_this);
 }
 

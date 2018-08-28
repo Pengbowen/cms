@@ -38,4 +38,7 @@ public interface ArticleService {
 
     Article getArticleById(Integer id);
 
+
+    Result<String> delArticle(int id);
+
 }
