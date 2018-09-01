@@ -435,6 +435,7 @@ h1 span{
     border:0.3rem solid #fff;
     padding:3rem 8rem;
     background-color:#fff;
+    opacity: 0.5;
 }
 /**
  * bug:

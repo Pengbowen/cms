@@ -45,6 +45,8 @@
 </body>
 <script src="js/jquery.min.js"></script>
 <script src="layui/layui.js"></script>
+<script src="/js/common.js"></script>
+
 <script th:inline="javascript">
     /*接收后台传输的参数*/
     /*<![CDATA[*/
@@ -118,9 +120,8 @@ function delMenu(id,name) {
         btn: ['确定','取消'] //按钮
     }, function(){
         //TODO 调用删除菜单接口进行删除操作
-        var url = 'menu/delete';
         var data = {'mid':id};
-        $.post(url,data,function (rtnData) {
+        $.post(URL.delMenuUrl,data,function (rtnData) {
             if(rtnData.code == 200){
                 layer.msg("已删除!");
             }else {
@@ -146,8 +147,7 @@ function addMenu() {
     //动态设置提交事件
     //监听提交
     form.on('submit(formSubmit)', function(data){
-        var url = 'menu/add';
-        $.post(url,data.field,function (result) {
+        $.post(URL.addMenuUrl,data.field,function (result) {
             if (result.code == 200){
                 layer.msg("添加成功!");
             }else{
@@ -176,9 +176,8 @@ function editMenu(id,name,href,parentId) {
     form.on('submit(formSubmit)', function(data){
         layer.msg(JSON.stringify(data.field));
         console.log('执行编辑');
-        var url = 'menu/update';
         var data = data.field;
-        $.post(url,data,function (rtnData) {
+        $.post(URL.updateMenuUrl,data,function (rtnData) {
 
             if (rtnData.code == 200){
                 layer.msg("数据已修改!");
@@ -210,9 +209,7 @@ function addChildMenu(id,name) {
     $('#pid').val(id);
     //监听提交
     form.on('submit(formSubmit)', function(data){
-        var url = "menu/add";
-        console.log(data);
-        $.post(url,data.field,function (rtnData) {
+        $.post(URL.addMenuUrl,data.field,function (rtnData) {
             if (rtnData.code == 200){
                 layer.msg("添加成功!");
             }else{

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @create: 2018-06-09 14:02
  **/
 @Controller
-@RequestMapping("upload")
+@RequestMapping("admin/upload")
 @PropertySource("classpath:blog_setting.properties")
 public class FileUploadController {
     @Value("${img_save_path}")

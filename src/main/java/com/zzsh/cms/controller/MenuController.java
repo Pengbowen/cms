@@ -20,7 +20,7 @@ import java.util.List;
  * @author: 彭博文
  * @create: 2018-06-03 15:43
  **/
-@RequestMapping("menu")
+@RequestMapping("/admin/menu")
 @Controller
 public class MenuController {
 
@@ -38,7 +38,7 @@ public class MenuController {
     public String viewMenuList(Model model){
         List<Menu> allMenus = menuService.getAllMenus();
         model.addAttribute("menus", JSONObject.toJSONString(allMenus));
-        return "menuslist";
+        return "/admin/menuslist";
     }
 
     /**

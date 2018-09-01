@@ -2,7 +2,9 @@ package com.zzsh.cms.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zzsh.cms.mapper.MenuMapper;
+import com.zzsh.cms.pojo.Article;
 import com.zzsh.cms.pojo.Menu;
+import com.zzsh.cms.service.ArticleService;
 import com.zzsh.cms.service.MenuService;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -10,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,30 +30,32 @@ public class ViewController {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private ArticleService articleService;
+    /**
+     * 进入后台主页
+     * @return
+     */
+    @RequestMapping("admin")
+    public String toAdminIndex(Model model){
+        List<Menu> menuList = menuService.getAllMenus();
+        model.addAttribute("menus", JSONObject.toJSONString(menuList));
+        return "admin/index";
+    }
+
     /**
      * 进入默认登陆页面
      * @return
      */
-    @RequestMapping("admin")
+    @RequestMapping()
     public String toIndex(Model model){
         List<Menu> menuList = menuService.getAllMenus();
         model.addAttribute("menus", JSONObject.toJSONString(menuList));
-        return "index";
+        return "blog/lw-index";
     }
-
-//    /**
-//     * 进入默认登陆页面
-//     * @return
-//     */
-//    @RequestMapping()
-//    public String toIndex(Model model){
-//        List<Menu> menuList = menuService.getAllMenus();
-//        model.addAttribute("menus", JSONObject.toJSONString(menuList));
-//        return "index";
-//    }
-
     /**
-     * 进入主页
+     * 进入登陆页面
      * @return
      */
     @RequestMapping("toLogin")
@@ -64,23 +65,17 @@ public class ViewController {
         return "/login";
     }
 
-    /**
-     * 进入默认登陆页面
-     * @return
-     */
-    @RequestMapping("test")
-    public String toTest(@Param("title") String title, Model model){
-        model.addAttribute("title",title);
-        logger.info("title=[{}]",title);
-        return "test";
-    }
 
     @RequestMapping(value ="blog/{pageName}")
     public String toBlogPage(@PathVariable("pageName") String pageName){
-        logger.info(pageName);
         return  "blog/"+pageName;
     }
-
+    @GetMapping("read/{articleId}")
+    public String readArticle(@PathVariable("articleId") Integer articleId,Model model){
+        Article article = articleService.getArticleById(articleId);
+        model.addAttribute("article",article);
+        return "blog/lw-article-fullwidth";
+    }
 
 
 }

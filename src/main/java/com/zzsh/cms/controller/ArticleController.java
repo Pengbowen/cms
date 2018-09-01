@@ -19,7 +19,7 @@ import java.util.List;
  * @create: 2018-06-09 11:27
  **/
 @Controller
-@RequestMapping("article")
+@RequestMapping("admin/article")
 public class ArticleController {
 
     @Autowired
@@ -28,12 +28,11 @@ public class ArticleController {
     @Autowired
     private CategoryService categoryService;
 
-    @RequestMapping("add")
+    @RequestMapping("view/add")
     public String addArticle(Model model){
-
         List<Category> categoryList = categoryService.getAllCategory();
         model.addAttribute("categoryList",categoryList);
-        return "add_article";
+        return "/admin/add_article";
     }
 
     @RequestMapping("publish")
@@ -43,18 +42,25 @@ public class ArticleController {
         article.setAuthorId(1);
         return  articleService.addArticle(article);
     }
-
-    @GetMapping("read/{articleId}")
-    public String readArticle(@PathVariable("articleId") Integer articleId,Model model){
-        Article article = articleService.getArticleById(articleId);
-        model.addAttribute("article",article);
-        return "blog/lw-article-fullwidth";
-
+    @PostMapping("update")
+    @ResponseBody
+    public Result<String> delArticle(Article article){
+        return articleService.updateArticle(article);
     }
+
     @PostMapping("del")
     @ResponseBody
     public Result<String> delArticle(int id){
         return articleService.delArticle(id);
+    }
+
+    @RequestMapping("view/update/{articleId}")
+    public String viewArticleUpdate(@PathVariable("articleId") int articleId,Model model){
+        Article article = articleService.getArticleById(articleId);
+        model.addAttribute("article",article);
+        List<Category> categoryList = categoryService.getAllCategory();
+        model.addAttribute("categoryList",categoryList);
+        return "/admin/update_article";
     }
 
 }
