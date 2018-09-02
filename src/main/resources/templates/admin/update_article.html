@@ -117,9 +117,9 @@
     //初始化editor
     var editor = new E('#editor');
     //配置上传图片路径
-    editor.customConfig.uploadImgServer = '/upload/img'; // 上传图片到服务器
+    editor.customConfig.uploadImgServer = URL.uploadImgUrl; // 上传图片到服务器
     //指定上传图片的参数名称
-    editor.customConfig.uploadFileName = 'file'
+    editor.customConfig.uploadFileName = 'file';
     //打开调试模式
     editor.customConfig.debug =true;
     //配置当编辑器中的内容变化时执行的方法

@@ -32,7 +32,7 @@ public class ArticleController {
     public String addArticle(Model model){
         List<Category> categoryList = categoryService.getAllCategory();
         model.addAttribute("categoryList",categoryList);
-        return "/admin/add_article";
+        return "admin/add_article";
     }
 
     @RequestMapping("publish")
@@ -60,7 +60,7 @@ public class ArticleController {
         model.addAttribute("article",article);
         List<Category> categoryList = categoryService.getAllCategory();
         model.addAttribute("categoryList",categoryList);
-        return "/admin/update_article";
+        return "admin/update_article";
     }
 
 }

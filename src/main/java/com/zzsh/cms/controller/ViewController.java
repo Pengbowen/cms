@@ -50,8 +50,8 @@ public class ViewController {
      */
     @RequestMapping()
     public String toIndex(Model model){
-        List<Menu> menuList = menuService.getAllMenus();
-        model.addAttribute("menus", JSONObject.toJSONString(menuList));
+        List<Article> articles = articleService.listArticleByCId(1);
+        model.addAttribute("articles",articles);
         return "blog/lw-index";
     }
     /**
@@ -62,7 +62,7 @@ public class ViewController {
     public String toLogin(Model model){
         List<Menu> menuList = menuService.getAllMenus();
         model.addAttribute("menus", JSONObject.toJSONString(menuList));
-        return "/login";
+        return "login";
     }
 
 
@@ -70,7 +70,7 @@ public class ViewController {
     public String toBlogPage(@PathVariable("pageName") String pageName){
         return  "blog/"+pageName;
     }
-    @GetMapping("read/{articleId}")
+    @GetMapping("blog/read/{articleId}")
     public String readArticle(@PathVariable("articleId") Integer articleId,Model model){
         Article article = articleService.getArticleById(articleId);
         model.addAttribute("article",article);

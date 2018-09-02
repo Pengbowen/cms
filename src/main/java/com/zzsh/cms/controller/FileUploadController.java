@@ -22,19 +22,25 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("admin/upload")
 @PropertySource("classpath:blog_setting.properties")
 public class FileUploadController {
-    @Value("${img_save_path}")
-    private String imgSavePath;
-    @Value("${accesss_img_path}")
-    private String accessImgPath;
+    @Value("${file.windows.uploadfolder}")
+    private String  windowsSavePath;
+
+    @Value("${file.linux.uploadfolder}")
+    private String  linuxSavePath;
+
+    @Value("${file.imgpath}")
+    private String  imgPath;
+
+    @Value("${accesss_path}")
+    private String accessPath;
     @RequestMapping("img")
     @ResponseBody
     public FileResult uploadFile(HttpServletRequest request,MultipartFile file) throws Exception {
         //获取上传目录的绝对路径
-        String filePath = ResourceUtils.getURL("classpath:").getPath()+imgSavePath;
-        String filea = FileUtil.uploadFile(file, filePath);
+        String filea = FileUtil.uploadFile(file, windowsSavePath+imgPath);
         //返回json
         FileResult fileResult = new FileResult();
-        String [] data = new String[]{accessImgPath+filea};
+        String [] data = new String[]{accessPath+imgPath+filea};
         fileResult.setData(data);
         fileResult.setErrno(0);
         return fileResult;

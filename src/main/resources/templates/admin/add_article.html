@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>发布文章</title>
-    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="/layui/css/layui.css">
 </head>
 <style>
     .title_div{
@@ -104,9 +104,9 @@
     </div>
 </form>
 </body>
-<script src="../js/jquery.min.js"></script>
-<script src="../layui/layui.js"></script>
-<script src="../js/wangEditor.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="/js/wangEditor.js"></script>
 <script src="/js/common.js"></script>
 
 <script>
@@ -115,7 +115,7 @@
     //初始化editor
     var editor = new E('#editor');
     //配置上传图片路径
-    editor.customConfig.uploadImgServer = '/upload/img'; // 上传图片到服务器
+    editor.customConfig.uploadImgServer = URL.uploadImgUrl; // 上传图片到服务器
     //指定上传图片的参数名称
     editor.customConfig.uploadFileName = 'file'
     //打开调试模式

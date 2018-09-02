@@ -38,7 +38,7 @@ public class MenuController {
     public String viewMenuList(Model model){
         List<Menu> allMenus = menuService.getAllMenus();
         model.addAttribute("menus", JSONObject.toJSONString(allMenus));
-        return "/admin/menuslist";
+        return "admin/menuslist";
     }
 
     /**
