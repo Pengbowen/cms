@@ -24,8 +24,8 @@ public class AdminViewController {
 
     @RequestMapping("articles")
     public String articlesManage(Model model){
-            List<Article> articleList = articleService.listArticleByCId(1);
-            model.addAttribute("articles",articleList);
+            List<Article> articles = articleService.listArticleByCId(1);
+            model.addAttribute("articles",articles);
             return "admin/articleslist";
     }
 }
