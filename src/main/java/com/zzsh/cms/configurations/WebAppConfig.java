@@ -32,7 +32,6 @@ public class WebAppConfig implements WebMvcConfigurer {
     @Value("${file.linux.uploadfolder}")
     private String  linuxSavePath;
 
-
     @Value("${accesss_path}")
     private String accessPath;
 

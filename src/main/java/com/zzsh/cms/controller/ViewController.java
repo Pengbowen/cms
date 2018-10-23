@@ -64,8 +64,6 @@ public class ViewController {
         model.addAttribute("menus", JSONObject.toJSONString(menuList));
         return "login";
     }
-
-
     @RequestMapping(value ="blog/{pageName}")
     public String toBlogPage(@PathVariable("pageName") String pageName){
         return  "blog/"+pageName;
@@ -76,6 +74,4 @@ public class ViewController {
         model.addAttribute("article",article);
         return "blog/lw-article-fullwidth";
     }
-
-
 }

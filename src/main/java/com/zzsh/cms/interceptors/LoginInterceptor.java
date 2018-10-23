@@ -2,7 +2,9 @@ package com.zzsh.cms.interceptors;
 
 import com.zzsh.cms.pojo.User;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +27,4 @@ public class LoginInterceptor implements HandlerInterceptor{
         response.sendRedirect("/toLogin");
         return false;
     }
-
-
 }

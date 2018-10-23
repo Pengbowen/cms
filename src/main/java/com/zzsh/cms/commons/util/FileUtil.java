@@ -14,17 +14,17 @@ import java.util.UUID;
  **/
 public class FileUtil {
 
-    public static String  uploadFile(MultipartFile file, String filePath) throws Exception {
+    public static String uploadFile(MultipartFile file, String filePath) throws Exception {
         byte[] fileBytes = file.getBytes();
         String fileNoname = file.getOriginalFilename();
-        String prefix = fileNoname.substring(fileNoname.lastIndexOf(".")+1);
+        String prefix = fileNoname.substring(fileNoname.lastIndexOf(".") + 1);
         //生成唯一文件名
-        String randomFileName = UUID.randomUUID().toString().replaceAll("-","")+"."+prefix;
+        String randomFileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + prefix;
         File targetFile = new File(filePath);
-        if(!targetFile.exists()){
+        if (!targetFile.exists()) {
             targetFile.mkdirs();
         }
-        FileOutputStream out = new FileOutputStream(filePath+randomFileName);
+        FileOutputStream out = new FileOutputStream(filePath + randomFileName);
         out.write(fileBytes);
         out.flush();
         out.close();

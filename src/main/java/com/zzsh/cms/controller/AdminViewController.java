@@ -28,6 +28,4 @@ public class AdminViewController {
             model.addAttribute("articles",articleList);
             return "admin/articleslist";
     }
-
-
 }

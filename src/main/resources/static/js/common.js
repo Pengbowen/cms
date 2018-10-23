@@ -4,7 +4,7 @@ var URL = {
     //更新文章url
     updateArticleUrl:"/admin/article/",
     //删除文章
-    delArticleUrl:"/admin/article/",
+    delArticleUrl:"/admin/article/del",
     //上传图片
     uploadImgUrl:"/admin/upload/img",
     //添加菜单

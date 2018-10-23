@@ -8,6 +8,8 @@ package com.zzsh.cms.commons.util;
  **/
 public class OsUtil {
 
+    public static final String OS_WINDOWS = "windows";
+
     /**
      * 判断系统是否运行在windows系统
      * @return
@@ -15,7 +17,7 @@ public class OsUtil {
     public static boolean onWindows() {
         String osName = System.getProperties().getProperty("os.name").toLowerCase();
 
-        if (osName.contains("windows")) {
+        if (osName.contains(OS_WINDOWS)) {
            return true;
         } else {
            return false;
